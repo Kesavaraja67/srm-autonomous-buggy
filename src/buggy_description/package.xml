@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>buggy_description</name>
+  <version>1.0.0</version>
+  <description>SRM Autonomous Buggy URDF and sensor description</description>
+  <maintainer email="team@srm.edu">Team Alpha</maintainer>
+  <license>MIT</license>
+  <depend>urdf</depend>
+  <depend>xacro</depend>
+  <depend>robot_state_publisher</depend>
+  <depend>joint_state_publisher</depend>
+  <depend>gazebo_ros</depend>
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

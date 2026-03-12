@@ -1,0 +1,791 @@
+<?xml version="1.0"?>
+<robot name="srm_aquila_buggy" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!--
+    SRM Autonomous Electric Campus Buggy
+    Based on: Aquila EV TE-A6+2 (Tri Electric Pvt Ltd, Tamil Nadu)
+    Real Dimensions: 4120mm L x 1200mm W x 1900mm H
+    Wheel: 205/50-10 (10 inch alloy rim, ~0.254m radius)
+    Max Speed: 30 kmph | Turning Radius: <5m
+    Chassis: Ladder type tubular steel
+  -->
+
+  <!-- ═══════════════════════════════════════════
+       PROPERTIES  (all in metres)
+       ═══════════════════════════════════════════ -->
+  <xacro:property name="chassis_length"  value="4.12"/>
+  <xacro:property name="chassis_width"   value="1.20"/>
+  <xacro:property name="chassis_height"  value="0.25"/>
+  <xacro:property name="chassis_z"       value="0.35"/>   <!-- ride height -->
+
+  <!-- Roof canopy -->
+  <xacro:property name="roof_length"     value="3.20"/>
+  <xacro:property name="roof_width"      value="1.20"/>
+  <xacro:property name="roof_thickness"  value="0.06"/>
+  <xacro:property name="roof_height"     value="1.90"/>   <!-- total buggy height from ground -->
+
+  <!-- Pillars (A-pillar front, B-pillar rear) -->
+  <xacro:property name="pillar_r"        value="0.04"/>
+  <xacro:property name="pillar_h"        value="1.30"/>
+
+  <!-- Windshield -->
+  <xacro:property name="ws_length"       value="1.30"/>
+  <xacro:property name="ws_height"       value="0.60"/>
+  <xacro:property name="ws_thickness"    value="0.02"/>
+
+  <!-- Wheel geometry: 205/50-10 tyre on 10in rim -->
+  <!-- 10in rim = 0.254m diameter = 0.127m radius -->
+  <!-- 205mm section, 50% aspect → sidewall = 0.1025m -->
+  <!-- total radius = 0.127 + 0.1025 = ~0.254m, use 0.26 for clearance -->
+  <xacro:property name="wheel_radius"    value="0.26"/>
+  <xacro:property name="wheel_width"     value="0.205"/>
+
+  <!-- Wheelbase & track -->
+  <xacro:property name="wheelbase"       value="2.60"/>   <!-- front-to-rear axle -->
+  <xacro:property name="track_width"     value="1.10"/>   <!-- centre-to-centre -->
+
+  <!-- Seat dimensions -->
+  <xacro:property name="seat_l"          value="0.45"/>
+  <xacro:property name="seat_w"          value="0.48"/>
+  <xacro:property name="seat_h"          value="0.12"/>
+  <xacro:property name="backrest_h"      value="0.50"/>
+  <xacro:property name="backrest_t"      value="0.08"/>
+
+  <!-- ═══════════════════════════════════════════
+       MATERIALS
+       ═══════════════════════════════════════════ -->
+  <material name="arctic_white">  <color rgba="0.96 0.96 0.96 1.0"/></material>
+  <material name="beige_seat">    <color rgba="0.82 0.76 0.60 1.0"/></material>
+  <material name="black_tyre">    <color rgba="0.10 0.10 0.10 1.0"/></material>
+  <material name="silver_rim">    <color rgba="0.75 0.75 0.78 1.0"/></material>
+  <material name="dark_grey">     <color rgba="0.22 0.22 0.22 1.0"/></material>
+  <material name="clear_acrylic"> <color rgba="0.80 0.90 1.00 0.35"/></material>
+  <material name="frp_roof">      <color rgba="0.94 0.94 0.94 1.0"/></material>
+  <material name="chassis_steel"> <color rgba="0.30 0.30 0.30 1.0"/></material>
+  <material name="dashboard_blk"> <color rgba="0.15 0.15 0.15 1.0"/></material>
+
+  <!-- ═══════════════════════════════════════════
+       BASE FOOTPRINT  (ground contact reference)
+       ═══════════════════════════════════════════ -->
+  <link name="base_footprint"/>
+
+  <joint name="base_joint" type="fixed">
+    <parent link="base_footprint"/>
+    <child  link="base_link"/>
+    <origin xyz="0 0 ${chassis_z}" rpy="0 0 0"/>
+  </joint>
+
+  <!-- ═══════════════════════════════════════════
+       MAIN CHASSIS
+       ═══════════════════════════════════════════ -->
+  <link name="base_link">
+    <visual>
+      <geometry><box size="${chassis_length} ${chassis_width} ${chassis_height}"/></geometry>
+      <material name="arctic_white"/>
+    </visual>
+    <collision>
+      <geometry><box size="${chassis_length} ${chassis_width} ${chassis_height}"/></geometry>
+    </collision>
+    <inertial>
+      <mass value="280.0"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="80"  ixy="0" ixz="0"
+               iyy="400" iyz="0"
+               izz="450"/>
+    </inertial>
+  </link>
+
+  <!-- ───────── UNDER-CHASSIS FRAME RAILS (visual only) ───────── -->
+  <joint name="frame_left_joint" type="fixed">
+    <parent link="base_link"/><child link="frame_left"/>
+    <origin xyz="0 ${chassis_width/2 - 0.08} ${-chassis_height/2 - 0.04}" rpy="0 0 0"/>
+  </joint>
+  <link name="frame_left">
+    <visual>
+      <geometry><box size="${chassis_length} 0.06 0.06"/></geometry>
+      <material name="chassis_steel"/>
+    </visual>
+    <inertial><mass value="0.01"/><inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/></inertial>
+  </link>
+
+  <joint name="frame_right_joint" type="fixed">
+    <parent link="base_link"/><child link="frame_right"/>
+    <origin xyz="0 ${-(chassis_width/2 - 0.08)} ${-chassis_height/2 - 0.04}" rpy="0 0 0"/>
+  </joint>
+  <link name="frame_right">
+    <visual>
+      <geometry><box size="${chassis_length} 0.06 0.06"/></geometry>
+      <material name="chassis_steel"/>
+    </visual>
+    <inertial><mass value="0.01"/><inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/></inertial>
+  </link>
+
+  <!-- ═══════════════════════════════════════════
+       BODY PANELS
+       ═══════════════════════════════════════════ -->
+
+  <!-- Front nose panel -->
+  <joint name="front_panel_joint" type="fixed">
+    <parent link="base_link"/><child link="front_panel"/>
+    <origin xyz="${chassis_length/2 - 0.01} 0 0.10" rpy="0 0 0"/>
+  </joint>
+  <link name="front_panel">
+    <visual>
+      <geometry><box size="0.10 ${chassis_width} 0.40"/></geometry>
+      <material name="arctic_white"/>
+    </visual>
+    <inertial><mass value="0.01"/><inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/></inertial>
+  </link>
+
+  <!-- Rear panel -->
+  <joint name="rear_panel_joint" type="fixed">
+    <parent link="base_link"/><child link="rear_panel"/>
+    <origin xyz="${-(chassis_length/2 - 0.01)} 0 0.10" rpy="0 0 0"/>
+  </joint>
+  <link name="rear_panel">
+    <visual>
+      <geometry><box size="0.10 ${chassis_width} 0.35"/></geometry>
+      <material name="arctic_white"/>
+    </visual>
+    <inertial><mass value="0.01"/><inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/></inertial>
+  </link>
+
+  <!-- Left side panel -->
+  <joint name="side_left_joint" type="fixed">
+    <parent link="base_link"/><child link="side_left"/>
+    <origin xyz="0.20 ${chassis_width/2} 0.15" rpy="0 0 0"/>
+  </joint>
+  <link name="side_left">
+    <visual>
+      <geometry><box size="${chassis_length - 0.5} 0.05 0.50"/></geometry>
+      <material name="arctic_white"/>
+    </visual>
+    <inertial><mass value="0.01"/><inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/></inertial>
+  </link>
+
+  <!-- Right side panel -->
+  <joint name="side_right_joint" type="fixed">
+    <parent link="base_link"/><child link="side_right"/>
+    <origin xyz="0.20 ${-chassis_width/2} 0.15" rpy="0 0 0"/>
+  </joint>
+  <link name="side_right">
+    <visual>
+      <geometry><box size="${chassis_length - 0.5} 0.05 0.50"/></geometry>
+      <material name="arctic_white"/>
+    </visual>
+    <inertial><mass value="0.01"/><inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/></inertial>
+  </link>
+
+  <!-- ═══════════════════════════════════════════
+       DASHBOARD
+       ═══════════════════════════════════════════ -->
+  <joint name="dashboard_joint" type="fixed">
+    <parent link="base_link"/><child link="dashboard"/>
+    <origin xyz="${chassis_length/2 - 0.55} 0 0.38" rpy="0 0.35 0"/>
+  </joint>
+  <link name="dashboard">
+    <visual>
+      <geometry><box size="0.08 ${chassis_width - 0.1} 0.35"/></geometry>
+      <material name="dashboard_blk"/>
+    </visual>
+    <inertial><mass value="0.01"/><inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/></inertial>
+  </link>
+
+  <!-- Steering column -->
+  <joint name="steering_col_joint" type="fixed">
+    <parent link="base_link"/><child link="steering_column"/>
+    <origin xyz="${chassis_length/2 - 0.50} 0.25 0.45" rpy="0 -0.6 0"/>
+  </joint>
+  <link name="steering_column">
+    <visual>
+      <geometry><cylinder radius="0.025" length="0.40"/></geometry>
+      <material name="dark_grey"/>
+    </visual>
+    <inertial><mass value="0.01"/><inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/></inertial>
+  </link>
+
+  <!-- Steering wheel -->
+  <joint name="steering_wheel_joint" type="fixed">
+    <parent link="steering_column"/><child link="steering_wheel"/>
+    <origin xyz="0 0 0.22" rpy="1.5708 0.5 0"/>
+  </joint>
+  <link name="steering_wheel">
+    <visual>
+      <geometry><cylinder radius="0.18" length="0.025"/></geometry>
+      <material name="dark_grey"/>
+    </visual>
+    <inertial><mass value="0.01"/><inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/></inertial>
+  </link>
+
+  <!-- ═══════════════════════════════════════════
+       WINDSHIELD
+       ═══════════════════════════════════════════ -->
+  <joint name="windshield_joint" type="fixed">
+    <parent link="base_link"/><child link="windshield"/>
+    <origin xyz="${chassis_length/2 - 0.42} 0 0.70" rpy="0 -0.30 0"/>
+  </joint>
+  <link name="windshield">
+    <visual>
+      <geometry><box size="${ws_thickness} ${chassis_width - 0.05} ${ws_height}"/></geometry>
+      <material name="clear_acrylic"/>
+    </visual>
+    <inertial><mass value="0.01"/><inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/></inertial>
+  </link>
+
+  <!-- ═══════════════════════════════════════════
+       ROOF PILLARS (A-front, B-rear)
+       ═══════════════════════════════════════════ -->
+  <!-- Front-left pillar -->
+  <joint name="pillar_fl_joint" type="fixed">
+    <parent link="base_link"/><child link="pillar_fl"/>
+    <origin xyz="${chassis_length/2 - 0.30} ${chassis_width/2 - 0.06} 0.75" rpy="0 0 0"/>
+  </joint>
+  <link name="pillar_fl">
+    <visual><geometry><cylinder radius="${pillar_r}" length="${pillar_h}"/></geometry><material name="arctic_white"/></visual>
+    <inertial><mass value="0.01"/><inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/></inertial>
+  </link>
+
+  <!-- Front-right pillar -->
+  <joint name="pillar_fr_joint" type="fixed">
+    <parent link="base_link"/><child link="pillar_fr"/>
+    <origin xyz="${chassis_length/2 - 0.30} ${-(chassis_width/2 - 0.06)} 0.75" rpy="0 0 0"/>
+  </joint>
+  <link name="pillar_fr">
+    <visual><geometry><cylinder radius="${pillar_r}" length="${pillar_h}"/></geometry><material name="arctic_white"/></visual>
+    <inertial><mass value="0.01"/><inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/></inertial>
+  </link>
+
+  <!-- Rear-left pillar -->
+  <joint name="pillar_rl_joint" type="fixed">
+    <parent link="base_link"/><child link="pillar_rl"/>
+    <origin xyz="${-(chassis_length/2 - 0.30)} ${chassis_width/2 - 0.06} 0.75" rpy="0 0 0"/>
+  </joint>
+  <link name="pillar_rl">
+    <visual><geometry><cylinder radius="${pillar_r}" length="${pillar_h}"/></geometry><material name="arctic_white"/></visual>
+    <inertial><mass value="0.01"/><inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/></inertial>
+  </link>
+
+  <!-- Rear-right pillar -->
+  <joint name="pillar_rr_joint" type="fixed">
+    <parent link="base_link"/><child link="pillar_rr"/>
+    <origin xyz="${-(chassis_length/2 - 0.30)} ${-(chassis_width/2 - 0.06)} 0.75" rpy="0 0 0"/>
+  </joint>
+  <link name="pillar_rr">
+    <visual><geometry><cylinder radius="${pillar_r}" length="${pillar_h}"/></geometry><material name="arctic_white"/></visual>
+    <inertial><mass value="0.01"/><inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/></inertial>
+  </link>
+
+  <!-- ═══════════════════════════════════════════
+       ROOF CANOPY (FRP)
+       ═══════════════════════════════════════════ -->
+  <joint name="roof_joint" type="fixed">
+    <parent link="base_link"/><child link="roof_link"/>
+    <origin xyz="-0.10 0 ${roof_height - chassis_z}" rpy="0 0 0"/>
+  </joint>
+  <link name="roof_link">
+    <visual>
+      <geometry><box size="${roof_length} ${roof_width + 0.10} ${roof_thickness}"/></geometry>
+      <material name="frp_roof"/>
+    </visual>
+    <collision>
+      <geometry><box size="${roof_length} ${roof_width + 0.10} ${roof_thickness}"/></geometry>
+    </collision>
+    <inertial>
+      <mass value="8.0"/>
+      <inertia ixx="2" ixy="0" ixz="0" iyy="5" iyz="0" izz="6"/>
+    </inertial>
+  </link>
+
+  <!-- Roof trim strip (decorative dark edge) -->
+  <joint name="roof_trim_joint" type="fixed">
+    <parent link="roof_link"/><child link="roof_trim"/>
+    <origin xyz="0 0 ${-roof_thickness/2 - 0.015}" rpy="0 0 0"/>
+  </joint>
+  <link name="roof_trim">
+    <visual>
+      <geometry><box size="${roof_length + 0.04} ${roof_width + 0.14} 0.03"/></geometry>
+      <material name="dark_grey"/>
+    </visual>
+    <inertial><mass value="0.01"/><inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/></inertial>
+  </link>
+
+  <!-- ═══════════════════════════════════════════
+       SEATS  (3 rows × 2 seats = 6 front-facing
+               + 1 rear bench = 2 rear-facing)
+       ═══════════════════════════════════════════ -->
+
+  <!-- Macro for one seat (cushion + backrest) -->
+  <xacro:macro name="seat" params="name px py">
+    <!-- seat cushion -->
+    <joint name="${name}_cushion_joint" type="fixed">
+      <parent link="base_link"/><child link="${name}_cushion"/>
+      <origin xyz="${px} ${py} 0.18" rpy="0 0 0"/>
+    </joint>
+    <link name="${name}_cushion">
+      <visual>
+        <geometry><box size="${seat_l} ${seat_w} ${seat_h}"/></geometry>
+        <material name="beige_seat"/>
+      </visual>
+      <inertial><mass value="0.01"/><inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/></inertial>
+    </link>
+    <!-- backrest -->
+    <joint name="${name}_back_joint" type="fixed">
+      <parent link="base_link"/><child link="${name}_back"/>
+      <origin xyz="${px - seat_l/2 + backrest_t/2} ${py} ${0.18 + seat_h/2 + backrest_h/2}" rpy="0 0 0"/>
+    </joint>
+    <link name="${name}_back">
+      <visual>
+        <geometry><box size="${backrest_t} ${seat_w} ${backrest_h}"/></geometry>
+        <material name="beige_seat"/>
+      </visual>
+      <inertial><mass value="0.01"/><inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/></inertial>
+    </link>
+  </xacro:macro>
+
+  <!-- Row 1: Driver + passenger (front) -->
+  <xacro:seat name="seat_r1_l" px="1.20"  py=" 0.28"/>
+  <xacro:seat name="seat_r1_r" px="1.20"  py="-0.28"/>
+
+  <!-- Row 2: Middle bench -->
+  <xacro:seat name="seat_r2_l" px="0.30"  py=" 0.28"/>
+  <xacro:seat name="seat_r2_r" px="0.30"  py="-0.28"/>
+
+  <!-- Row 3: Third bench -->
+  <xacro:seat name="seat_r3_l" px="-0.55" py=" 0.28"/>
+  <xacro:seat name="seat_r3_r" px="-0.55" py="-0.28"/>
+
+  <!-- Row 4: Rear-facing (back-to-back with row 3) -->
+  <joint name="seat_rear_cushion_joint" type="fixed">
+    <parent link="base_link"/><child link="seat_rear_cushion"/>
+    <origin xyz="-1.40 0 0.18" rpy="0 0 0"/>
+  </joint>
+  <link name="seat_rear_cushion">
+    <visual>
+      <geometry><box size="${seat_l} ${chassis_width - 0.20} ${seat_h}"/></geometry>
+      <material name="beige_seat"/>
+    </visual>
+    <inertial><mass value="0.01"/><inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/></inertial>
+  </link>
+  <joint name="seat_rear_back_joint" type="fixed">
+    <parent link="base_link"/><child link="seat_rear_back"/>
+    <origin xyz="-1.20 0 ${0.18 + seat_h/2 + backrest_h/2}" rpy="0 0 3.14159"/>
+  </joint>
+  <link name="seat_rear_back">
+    <visual>
+      <geometry><box size="${backrest_t} ${chassis_width - 0.20} ${backrest_h}"/></geometry>
+      <material name="beige_seat"/>
+    </visual>
+    <inertial><mass value="0.01"/><inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/></inertial>
+  </link>
+
+  <!-- ═══════════════════════════════════════════
+       WHEELS — MACRO
+       ═══════════════════════════════════════════ -->
+  <xacro:macro name="wheel" params="name px py mirrored">
+    <joint name="${name}_joint" type="continuous">
+      <parent link="base_link"/>
+      <child  link="${name}"/>
+      <origin xyz="${px} ${py} ${-(chassis_height/2 + 0.04)}" rpy="0 0 0"/>
+      <axis xyz="0 1 0"/>
+      <dynamics damping="0.5" friction="0.5"/>
+    </joint>
+
+    <link name="${name}">
+      <!-- Tyre (black rubber) -->
+      <visual>
+        <origin xyz="0 0 0" rpy="1.5708 0 0"/>
+        <geometry><cylinder radius="${wheel_radius}" length="${wheel_width}"/></geometry>
+        <material name="black_tyre"/>
+      </visual>
+      <!-- Alloy rim (silver) — slightly smaller cylinder inset -->
+      <visual>
+        <origin xyz="0 0 0" rpy="1.5708 0 0"/>
+        <geometry><cylinder radius="0.127" length="${wheel_width + 0.01}"/></geometry>
+        <material name="silver_rim"/>
+      </visual>
+      <!-- Hub cap -->
+      <visual>
+        <origin xyz="0 ${mirrored * (wheel_width/2 + 0.005)} 0" rpy="1.5708 0 0"/>
+        <geometry><cylinder radius="0.06" length="0.02"/></geometry>
+        <material name="arctic_white"/>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="1.5708 0 0"/>
+        <geometry><cylinder radius="${wheel_radius}" length="${wheel_width}"/></geometry>
+      </collision>
+      <inertial>
+        <mass value="12.0"/>
+        <origin xyz="0 0 0" rpy="1.5708 0 0"/>
+        <inertia ixx="0.4" ixy="0" ixz="0" iyy="0.4" iyz="0" izz="0.7"/>
+      </inertial>
+    </link>
+
+    <!-- Wheel friction for Gazebo -->
+    <gazebo reference="${name}">
+      <mu1>1.0</mu1>
+      <mu2>1.0</mu2>
+      <kp>1e6</kp>
+      <kd>100</kd>
+      <material>Gazebo/Black</material>
+    </gazebo>
+  </xacro:macro>
+
+  <!-- Instantiate 4 wheels -->
+  <!-- wheelbase=2.60m, front axle at +1.30, rear at -1.30 -->
+  <!-- track=1.10m, each side at ±0.55 -->
+  <xacro:wheel name="wheel_fl" px=" 1.30" py=" 0.55" mirrored=" 1"/>
+  <xacro:wheel name="wheel_fr" px=" 1.30" py="-0.55" mirrored="-1"/>
+  <xacro:wheel name="wheel_rl" px="-1.30" py=" 0.55" mirrored=" 1"/>
+  <xacro:wheel name="wheel_rr" px="-1.30" py="-0.55" mirrored="-1"/>
+
+  <!-- ═══════════════════════════════════════════
+       LIGHTS  (headlights + taillights)
+       ═══════════════════════════════════════════ -->
+  <!-- Left headlight -->
+  <joint name="headlight_l_joint" type="fixed">
+    <parent link="base_link"/><child link="headlight_l"/>
+    <origin xyz="${chassis_length/2 - 0.03} 0.38 0.12" rpy="0 1.5708 0"/>
+  </joint>
+  <link name="headlight_l">
+    <visual><geometry><cylinder radius="0.07" length="0.04"/></geometry>
+      <material name="arctic_white"/></visual>
+    <inertial><mass value="0.01"/><inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/></inertial>
+  </link>
+
+  <!-- Right headlight -->
+  <joint name="headlight_r_joint" type="fixed">
+    <parent link="base_link"/><child link="headlight_r"/>
+    <origin xyz="${chassis_length/2 - 0.03} -0.38 0.12" rpy="0 1.5708 0"/>
+  </joint>
+  <link name="headlight_r">
+    <visual><geometry><cylinder radius="0.07" length="0.04"/></geometry>
+      <material name="arctic_white"/></visual>
+    <inertial><mass value="0.01"/><inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/></inertial>
+  </link>
+
+  <!-- Left tail light -->
+  <joint name="taillight_l_joint" type="fixed">
+    <parent link="base_link"/><child link="taillight_l"/>
+    <origin xyz="${-(chassis_length/2 - 0.03)} 0.40 0.08" rpy="0 1.5708 0"/>
+  </joint>
+  <link name="taillight_l">
+    <visual><geometry><cylinder radius="0.055" length="0.03"/></geometry>
+      <material name="dark_grey"/></visual>
+    <inertial><mass value="0.01"/><inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/></inertial>
+  </link>
+
+  <!-- Right tail light -->
+  <joint name="taillight_r_joint" type="fixed">
+    <parent link="base_link"/><child link="taillight_r"/>
+    <origin xyz="${-(chassis_length/2 - 0.03)} -0.40 0.08" rpy="0 1.5708 0"/>
+  </joint>
+  <link name="taillight_r">
+    <visual><geometry><cylinder radius="0.055" length="0.03"/></geometry>
+      <material name="dark_grey"/></visual>
+    <inertial><mass value="0.01"/><inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/></inertial>
+  </link>
+
+  <!-- ═══════════════════════════════════════════
+       SENSOR LINKS  (exact positions from Master Plan)
+       ═══════════════════════════════════════════ -->
+
+  <!-- LiDAR — Livox Mid-360 proxy — roof centre -->
+  <joint name="lidar_joint" type="fixed">
+    <parent link="base_link"/><child link="lidar_link"/>
+    <origin xyz="0.0 0.0 1.85" rpy="0 0 0"/>
+  </joint>
+  <link name="lidar_link">
+    <visual>
+      <geometry><cylinder radius="0.055" length="0.09"/></geometry>
+      <material name="dark_grey"/>
+    </visual>
+    <collision><geometry><cylinder radius="0.055" length="0.09"/></geometry></collision>
+    <inertial><mass value="0.1"/><inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/></inertial>
+  </link>
+  <gazebo reference="lidar_link"><material>Gazebo/DarkGrey</material></gazebo>
+
+  <!-- Camera — RealSense D435i proxy — front face -->
+  <joint name="camera_joint" type="fixed">
+    <parent link="base_link"/><child link="camera_link"/>
+    <origin xyz="1.2 0.0 1.20" rpy="0 0 0"/>
+  </joint>
+  <link name="camera_link">
+    <visual>
+      <geometry><box size="0.025 0.090 0.025"/></geometry>
+      <material name="dark_grey"/>
+    </visual>
+    <collision><geometry><box size="0.025 0.090 0.025"/></geometry></collision>
+    <inertial><mass value="0.07"/><inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/></inertial>
+  </link>
+
+  <!-- IMU — BNO055 proxy — vehicle centroid -->
+  <joint name="imu_joint" type="fixed">
+    <parent link="base_link"/><child link="imu_link"/>
+    <origin xyz="0.0 0.0 0.50" rpy="0 0 0"/>
+  </joint>
+  <link name="imu_link">
+    <visual><geometry><box size="0.04 0.04 0.02"/></geometry><material name="dark_grey"/></visual>
+    <inertial><mass value="0.05"/><inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/></inertial>
+  </link>
+
+  <!-- GPS — U-blox proxy — rear top -->
+  <joint name="gps_joint" type="fixed">
+    <parent link="base_link"/><child link="gps_link"/>
+    <origin xyz="-0.5 0.0 1.60" rpy="0 0 0"/>
+  </joint>
+  <link name="gps_link">
+    <visual><geometry><box size="0.06 0.06 0.015"/></geometry><material name="dark_grey"/></visual>
+    <inertial><mass value="0.05"/><inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/></inertial>
+  </link>
+
+  <!-- Ultrasonic FRONT -->
+  <joint name="ultrasonic_front_joint" type="fixed">
+    <parent link="base_link"/><child link="ultrasonic_front_link"/>
+    <origin xyz="1.5 0.0 0.30" rpy="0 0 0"/>
+  </joint>
+  <link name="ultrasonic_front_link">
+    <visual><geometry><cylinder radius="0.018" length="0.025"/></geometry><material name="dark_grey"/></visual>
+    <inertial><mass value="0.02"/><inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/></inertial>
+  </link>
+
+  <!-- Ultrasonic REAR -->
+  <joint name="ultrasonic_rear_joint" type="fixed">
+    <parent link="base_link"/><child link="ultrasonic_rear_link"/>
+    <origin xyz="-1.5 0.0 0.30" rpy="0 0 3.14159"/>
+  </joint>
+  <link name="ultrasonic_rear_link">
+    <visual><geometry><cylinder radius="0.018" length="0.025"/></geometry><material name="dark_grey"/></visual>
+    <inertial><mass value="0.02"/><inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/></inertial>
+  </link>
+
+  <!-- Ultrasonic LEFT -->
+  <joint name="ultrasonic_left_joint" type="fixed">
+    <parent link="base_link"/><child link="ultrasonic_left_link"/>
+    <origin xyz="0.0 0.8 0.30" rpy="0 0 1.5708"/>
+  </joint>
+  <link name="ultrasonic_left_link">
+    <visual><geometry><cylinder radius="0.018" length="0.025"/></geometry><material name="dark_grey"/></visual>
+    <inertial><mass value="0.02"/><inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/></inertial>
+  </link>
+
+  <!-- Ultrasonic RIGHT -->
+  <joint name="ultrasonic_right_joint" type="fixed">
+    <parent link="base_link"/><child link="ultrasonic_right_link"/>
+    <origin xyz="0.0 -0.8 0.30" rpy="0 0 -1.5708"/>
+  </joint>
+  <link name="ultrasonic_right_link">
+    <visual><geometry><cylinder radius="0.018" length="0.025"/></geometry><material name="dark_grey"/></visual>
+    <inertial><mass value="0.02"/><inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/></inertial>
+  </link>
+
+  <!-- ═══════════════════════════════════════════
+       GAZEBO SENSOR PLUGINS
+       ═══════════════════════════════════════════ -->
+
+  <!-- Differential Drive (rear axle) -->
+  <gazebo>
+    <plugin name="diff_drive_controller" filename="libgazebo_ros_diff_drive.so">
+      <ros>
+        <namespace>/</namespace>
+      </ros>
+      <left_joint>wheel_rl_joint</left_joint>
+      <right_joint>wheel_rr_joint</right_joint>
+      <wheel_separation>1.10</wheel_separation>
+      <wheel_diameter>${wheel_radius * 2}</wheel_diameter>
+      <max_wheel_torque>500</max_wheel_torque>
+      <max_wheel_acceleration>5.0</max_wheel_acceleration>
+      <publish_odom>true</publish_odom>
+      <publish_odom_tf>true</publish_odom_tf>
+      <publish_wheel_tf>true</publish_wheel_tf>
+      <odometry_frame>odom</odometry_frame>
+      <robot_base_frame>base_footprint</robot_base_frame>
+      <command_topic>cmd_vel</command_topic>
+      <odometry_topic>odom</odometry_topic>
+    </plugin>
+  </gazebo>
+
+  <!-- LiDAR — 360° LaserScan at 10Hz -->
+  <gazebo reference="lidar_link">
+    <sensor type="ray" name="lidar_sensor">
+      <pose>0 0 0 0 0 0</pose>
+      <visualize>true</visualize>
+      <update_rate>10</update_rate>
+      <ray>
+        <scan>
+          <horizontal>
+            <samples>360</samples>
+            <resolution>1</resolution>
+            <min_angle>-3.14159</min_angle>
+            <max_angle>3.14159</max_angle>
+          </horizontal>
+        </scan>
+        <range>
+          <min>0.10</min>
+          <max>30.0</max>
+          <resolution>0.01</resolution>
+        </range>
+        <noise>
+          <type>gaussian</type>
+          <mean>0.0</mean>
+          <stddev>0.005</stddev>
+        </noise>
+      </ray>
+      <plugin name="lidar_plugin" filename="libgazebo_ros_ray_sensor.so">
+        <ros>
+          <namespace>/</namespace>
+          <remapping>~/out:=scan</remapping>
+        </ros>
+        <output_type>sensor_msgs/LaserScan</output_type>
+        <frame_name>lidar_link</frame_name>
+      </plugin>
+    </sensor>
+  </gazebo>
+
+  <!-- Camera — RealSense D435i proxy 640x480 30Hz -->
+  <gazebo reference="camera_link">
+    <sensor type="camera" name="camera_sensor">
+      <update_rate>30</update_rate>
+      <visualize>true</visualize>
+      <camera name="front_camera">
+        <horizontal_fov>1.047</horizontal_fov>
+        <image>
+          <width>640</width>
+          <height>480</height>
+          <format>R8G8B8</format>
+        </image>
+        <clip><near>0.05</near><far>50.0</far></clip>
+        <noise><type>gaussian</type><mean>0.0</mean><stddev>0.005</stddev></noise>
+      </camera>
+      <plugin name="camera_plugin" filename="libgazebo_ros_camera.so">
+        <ros><namespace>/</namespace></ros>
+        <camera_name>camera</camera_name>
+        <image_topic_name>image_raw</image_topic_name>
+        <camera_info_topic_name>camera_info</camera_info_topic_name>
+        <frame_name>camera_link</frame_name>
+      </plugin>
+    </sensor>
+  </gazebo>
+
+  <!-- IMU — BNO055 proxy at 100Hz -->
+  <gazebo reference="imu_link">
+    <sensor name="imu_sensor" type="imu">
+      <update_rate>100</update_rate>
+      <plugin name="imu_plugin" filename="libgazebo_ros_imu_sensor.so">
+        <ros>
+          <namespace>/</namespace>
+          <remapping>~/out:=imu/data</remapping>
+        </ros>
+        <initial_orientation_as_reference>false</initial_orientation_as_reference>
+        <frame_name>imu_link</frame_name>
+      </plugin>
+    </sensor>
+  </gazebo>
+
+  <!-- GPS — U-blox proxy -->
+  <gazebo reference="gps_link">
+    <sensor name="gps_sensor" type="gps">
+      <update_rate>1</update_rate>
+      <plugin name="gps_plugin" filename="libgazebo_ros_gps_sensor.so">
+        <ros>
+          <namespace>/</namespace>
+          <remapping>~/out:=gps/fix</remapping>
+        </ros>
+        <frame_name>gps_link</frame_name>
+      </plugin>
+    </sensor>
+  </gazebo>
+
+  <!-- Ultrasonic FRONT — narrow beam -->
+  <gazebo reference="ultrasonic_front_link">
+    <sensor type="ray" name="ultrasonic_front_sensor">
+      <update_rate>10</update_rate>
+      <ray>
+        <scan>
+          <horizontal>
+            <samples>3</samples>
+            <resolution>1</resolution>
+            <min_angle>-0.0524</min_angle>
+            <max_angle>0.0524</max_angle>
+          </horizontal>
+        </scan>
+        <range><min>0.02</min><max>2.0</max><resolution>0.001</resolution></range>
+      </ray>
+      <plugin name="ultrasonic_front_plugin" filename="libgazebo_ros_ray_sensor.so">
+        <ros>
+          <namespace>/</namespace>
+          <remapping>~/out:=ultrasonic/front</remapping>
+        </ros>
+        <output_type>sensor_msgs/LaserScan</output_type>
+        <frame_name>ultrasonic_front_link</frame_name>
+      </plugin>
+    </sensor>
+  </gazebo>
+
+  <!-- Ultrasonic REAR -->
+  <gazebo reference="ultrasonic_rear_link">
+    <sensor type="ray" name="ultrasonic_rear_sensor">
+      <update_rate>10</update_rate>
+      <ray>
+        <scan>
+          <horizontal>
+            <samples>3</samples><resolution>1</resolution>
+            <min_angle>-0.0524</min_angle><max_angle>0.0524</max_angle>
+          </horizontal>
+        </scan>
+        <range><min>0.02</min><max>2.0</max><resolution>0.001</resolution></range>
+      </ray>
+      <plugin name="ultrasonic_rear_plugin" filename="libgazebo_ros_ray_sensor.so">
+        <ros><namespace>/</namespace><remapping>~/out:=ultrasonic/rear</remapping></ros>
+        <output_type>sensor_msgs/LaserScan</output_type>
+        <frame_name>ultrasonic_rear_link</frame_name>
+      </plugin>
+    </sensor>
+  </gazebo>
+
+  <!-- Ultrasonic LEFT -->
+  <gazebo reference="ultrasonic_left_link">
+    <sensor type="ray" name="ultrasonic_left_sensor">
+      <update_rate>10</update_rate>
+      <ray>
+        <scan>
+          <horizontal>
+            <samples>3</samples><resolution>1</resolution>
+            <min_angle>-0.0524</min_angle><max_angle>0.0524</max_angle>
+          </horizontal>
+        </scan>
+        <range><min>0.02</min><max>2.0</max><resolution>0.001</resolution></range>
+      </ray>
+      <plugin name="ultrasonic_left_plugin" filename="libgazebo_ros_ray_sensor.so">
+        <ros><namespace>/</namespace><remapping>~/out:=ultrasonic/left</remapping></ros>
+        <output_type>sensor_msgs/LaserScan</output_type>
+        <frame_name>ultrasonic_left_link</frame_name>
+      </plugin>
+    </sensor>
+  </gazebo>
+
+  <!-- Ultrasonic RIGHT -->
+  <gazebo reference="ultrasonic_right_link">
+    <sensor type="ray" name="ultrasonic_right_sensor">
+      <update_rate>10</update_rate>
+      <ray>
+        <scan>
+          <horizontal>
+            <samples>3</samples><resolution>1</resolution>
+            <min_angle>-0.0524</min_angle><max_angle>0.0524</max_angle>
+          </horizontal>
+        </scan>
+        <range><min>0.02</min><max>2.0</max><resolution>0.001</resolution></range>
+      </ray>
+      <plugin name="ultrasonic_right_plugin" filename="libgazebo_ros_ray_sensor.so">
+        <ros><namespace>/</namespace><remapping>~/out:=ultrasonic/right</remapping></ros>
+        <output_type>sensor_msgs/LaserScan</output_type>
+        <frame_name>ultrasonic_right_link</frame_name>
+      </plugin>
+    </sensor>
+  </gazebo>
+
+  <!-- Chassis colour for Gazebo renderer -->
+  <gazebo reference="base_link"><material>Gazebo/White</material></gazebo>
+  <gazebo reference="roof_link"><material>Gazebo/White</material></gazebo>
+
+</robot>
