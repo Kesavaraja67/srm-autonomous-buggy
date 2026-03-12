@@ -69,10 +69,9 @@ CMakeCache.txt
 CMakeFiles/
 CMakeTmp/
 cmake_install.cmake
-Makefile
 CTestTestfile.cmake
 _CPack_Packages/
-*.cmake
+# NOTE: *.cmake is NOT ignored — ROS 2 needs these files
 !CMakeLists.txt
 
 # ─── Gazebo / Simulation ─────────────────────────────────────
