@@ -1,19 +1,9 @@
-
 <div align="center">
 
 <!-- HERO BANNER -->
 <img src="docs/assets/banner.png" alt="SRM Autonomous Buggy Banner" width="100%"/>
 
 <br/>
-
-```
-███████╗██████╗ ███╗   ███╗     █████╗ ██╗   ██╗████████╗ ██████╗
-██╔════╝██╔══██╗████╗ ████║    ██╔══██╗██║   ██║╚══██╔══╝██╔═══██╗
-███████╗██████╔╝██╔████╔██║    ███████║██║   ██║   ██║   ██║   ██║
-╚════██║██╔══██╗██║╚██╔╝██║    ██╔══██║██║   ██║   ██║   ██║   ██║
-███████║██║  ██║██║ ╚═╝ ██║    ██║  ██║╚██████╔╝   ██║   ╚██████╔╝
-╚══════╝╚═╝  ╚═╝╚═╝     ╚═╝    ╚═╝  ╚═╝ ╚═════╝    ╚═╝    ╚═════╝
-```
 
 **AUTONOMOUS ELECTRIC CAMPUS BUGGY**
 
@@ -69,6 +59,7 @@ This repository contains the complete **Phase 1 Software-in-the-Loop (SITL)** si
 - [Day-by-Day Schedule](#-day-by-day-schedule)
 - [Known Pitfalls](#-known-pitfalls--fixes)
 - [Phase 2 Roadmap](#-phase-2-roadmap)
+- [Contributing Guidelines](#-contributing-guidelines)
 - [Team](#-team)
 
 ---
@@ -404,7 +395,7 @@ python3 map_graph.py
 
 ---
 
-## ❓ HOD Q&A Quick Reference
+## ❓ Q&A Quick Reference
 
 | Question | Answer |
 |----------|--------|
@@ -450,10 +441,74 @@ MINIMUM VIABLE DEMO — Phase 1 is a success if ALL 5 are true:
 
 ---
 
+## 🤝 Contributing Guidelines
+
+> **Read the full [CONTRIBUTING.md](CONTRIBUTING.md) before making any changes to this repository.**
+
+A quick summary of the rules every team member must follow:
+
+### Branching
+
+Always branch off `main`. Never commit directly to `main`.
+
+```bash
+git checkout main
+git pull origin main
+git checkout -b feature/your-feature-name
+```
+
+| Prefix | Use for | Example |
+|--------|---------|---------|
+| `feature/` | New node, behaviour, or sensor | `feature/crowd-detector` |
+| `fix/` | Bug fix in existing code | `fix/waypoint-oscillation` |
+| `docs/` | README, comments, diagrams only | `docs/update-traceability` |
+| `test/` | Adding or fixing test scripts | `test/stress-run-script` |
+
+### Commits
+
+Write short, clear commit messages with a prefix so teammates can see what changed at a glance.
+
+```bash
+# Good
+git commit -m "feat: add ultrasonic monitor node with 0.30 m threshold"
+git commit -m "fix: increase arrival radius to stop waypoint oscillation"
+git commit -m "docs: add Day 5 integration notes to README"
+
+# Bad
+git commit -m "changes"
+git commit -m "fix stuff"
+```
+
+### Pull Requests
+
+Every change goes through a Pull Request. No direct pushes to `main`, no exceptions.
+
+- Assign at least one teammate as reviewer before requesting a merge
+- The PR description must state what changed, why it changed, and how you tested it
+- All review comments must be resolved before merging
+
+### Hard Rules
+
+- **No force pushes** — `git push --force` is banned on all branches
+- **No rebasing shared branches** — rebase only your own local branch before its first push
+- **Always merge with `--no-ff`** — keep the history clean and traceable
+- Delete your feature branch after it is merged
+
+### Code Standards
+
+- All Python nodes must pass `colcon build` with zero errors before a PR is opened
+- Every new threshold or state transition must have a comment referencing the plan section it comes from (e.g. `# §5.1 — LiDAR stop threshold`)
+- Do not change any existing ROS 2 topic names or message types without team discussion — these are shared contracts between all nodes
+- Only `speed_controller.py` is allowed to publish to `/cmd_vel`
+
+For the complete workflow with full examples, see [CONTRIBUTING.md](CONTRIBUTING.md).
+
+---
+
 ## 👥 Team
 
 **SRM Institute of Science and Technology**  
-Department of Artificial Inteligence and Machine Learning.  
+Department of Artificial Intelligence and Machine Learning.  
 6-Person Autonomous Systems Team · Phase 1 SITL Sprint · March 2026
 
 | Sub-Team | Members | Responsibility |
