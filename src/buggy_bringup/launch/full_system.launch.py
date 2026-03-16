@@ -54,12 +54,12 @@ def generate_launch_description():
             arguments=[
                 '-entity', 'srm_buggy',
                 '-topic',  'robot_description',
-                '-x', '-30',
+                '-x', '-13',
                 '-y', '0',
                 '-z', '0.425',
                 '-R', '0',
                 '-P', '0',
-                '-Y', '3.14159'
+                '-Y', '0.0'
             ]
         ),
 

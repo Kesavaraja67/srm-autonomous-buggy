@@ -13,17 +13,17 @@ class WaypointFollower(Node):
         super().__init__('waypoint_follower')
 
         self.goal_tolerance    = 4.0
-        self.linear_speed      = 2.0
-        self.angular_gain      = 2.5
-        self.max_angular_speed = 2.0
+        self.linear_speed      = 1.0
+        self.angular_gain      = 0.7
+        self.max_angular_speed = 1.0
 
-        self.waypoints  = []
-        self.current_wp = 0
-        self.robot_x    = 0.0
-        self.robot_y    = 0.0
-        self.robot_yaw  = 0.0
-        self.active     = False
-        self.stopped    = False
+        self.waypoints     = []
+        self.current_wp    = 0
+        self.robot_x       = 0.0
+        self.robot_y       = 0.0
+        self.robot_yaw     = 0.0
+        self.active        = False
+        self.stopped       = False
         self.odom_received = False
 
         self.path_sub = self.create_subscription(
@@ -112,7 +112,7 @@ class WaypointFollower(Node):
         angular_vel = max(-self.max_angular_speed,
                           min(self.max_angular_speed, angular_vel))
 
-        if abs(angle_error) > 1.0:
+        if abs(angle_error) > 1.5:
             linear_vel = 0.0
         elif abs(angle_error) > 0.3:
             linear_vel = self.linear_speed * 0.4
