@@ -1,0 +1,15 @@
+Panels:
+  - Class: rviz_common/Displays
+    Name: Displays
+Visualization Manager:
+  Global Options:
+    Fixed Frame: odom
+  Displays:
+    - Class: rviz_default_plugins/RobotModel
+      Name: RobotModel
+      Topic: /robot_description
+      Enabled: true
+    - Class: rviz_default_plugins/LaserScan
+      Name: LiDAR
+      Topic: /scan
+      Enabled: true
