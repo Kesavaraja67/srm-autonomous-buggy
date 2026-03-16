@@ -13,7 +13,7 @@ def generate_launch_description():
     description_dir = get_package_share_directory('buggy_description')
 
     world_file = os.path.join(bringup_dir, 'worlds', 'srm_campus.world')
-    urdf_file  = os.path.join(description_dir, 'urdf', 'buggy.urdf.xacro')
+    urdf_file  = os.path.join(description_dir, 'urdf', 'buggy_urdf.xacro')
 
     robot_description = ParameterValue(
         xacro.process_file(urdf_file).toxml(),
@@ -56,7 +56,7 @@ def generate_launch_description():
                 '-topic',  'robot_description',
                 '-x', '-30',
                 '-y', '0',
-                '-z', '0.3',
+                '-z', '0.425',
                 '-R', '0',
                 '-P', '0',
                 '-Y', '3.14159'
