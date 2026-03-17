@@ -656,8 +656,8 @@
   ═══════════════════════════════ -->
   <joint name="lidar_jt" type="fixed">
     <parent link="base_link"/><child link="lidar_link"/>
-    <!-- scan origin at 1.60m above base_link, offset -0.10 to align with roof -->
-    <origin xyz="-0.10 0.0 1.60" rpy="0 0 0"/>
+    <!-- scan origin at 1.85m above base_link, offset -0.10 to align with roof -->
+    <origin xyz="-0.10 0.0 1.85" rpy="0 0 0"/>
   </joint>
   <link name="lidar_link">
     <!-- Square silver base — sits on roof surface -->
