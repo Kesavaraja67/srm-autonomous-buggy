@@ -2,10 +2,10 @@ import heapq
 
 # Campus nodes — coordinates match srm_campus.world v3.0 exactly
 NODES = {
-    'BUGGY_HUB':  (  0,   0),
-    'SRM_IST':    (  0,  50),
-    'SRM_HOSP':   ( 50,   0),
-    'SRM_TEMPLE': (  0, -50),
+    'BUGGY_HUB':  (  0.0,   0.0),
+    'SRM_IST':    (  0.0,  50.0),
+    'SRM_HOSP':   ( 50.0,   0.0),
+    'SRM_TEMPLE': (  0.0, -50.0),
 }
 
 # Bidirectional edges with distances in metres
