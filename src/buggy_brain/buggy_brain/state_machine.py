@@ -1,4 +1,3 @@
-cat > ~/srm_buggy_ws/src/srm-autonomous-buggy/buggy_brain/buggy_brain/state_machine.py << 'ENDOFFILE'
 #!/usr/bin/env python3
 import time
 import threading
@@ -144,10 +143,12 @@ def main(args=None):
     except KeyboardInterrupt:
         pass
     finally:
-        node.destroy_node()
-        rclpy.shutdown()
+        try:
+            node.destroy_node()
+            rclpy.shutdown()
+        except Exception:
+            pass
 
 
 if __name__ == '__main__':
     main()
-ENDOFFILE

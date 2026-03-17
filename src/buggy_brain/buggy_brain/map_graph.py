@@ -18,17 +18,25 @@ from typing import Dict, List, Tuple, Optional
 # ── §2.2 ODD — Named campus destinations ─────────────────────
 NODES = {
     'BUGGY_HUB':  ( 0.0,   0.0),
-    'SRM_IST':    ( 0.0,  50.0),
-    'SRM_HOSP':   (50.0,   0.0),
-    'SRM_TEMPLE': ( 0.0, -50.0),
+    'SRM_IST':    ( 1.0,  50.0),
+    'SRM_HOSP':   (63.0,  12.0),
+    'SRM_TEMPLE': ( 1.0, -50.0),
+    'RND_N':      (13.0,   8.0),
+    'RND_S':      (13.0,  -8.0),
+    'RND_E':      (21.0,   0.0),
+    'RND_W':      ( 5.0,   0.0),
 }
 
 # ── §2.2 — Road network (metres) ─────────────────────────────
 EDGES = {
-    'BUGGY_HUB':  [('SRM_IST', 50.0), ('SRM_HOSP', 50.0), ('SRM_TEMPLE', 50.0)],
-    'SRM_IST':    [('BUGGY_HUB', 50.0)],
-    'SRM_HOSP':   [('BUGGY_HUB', 50.0)],
-    'SRM_TEMPLE': [('BUGGY_HUB', 50.0)],
+    'BUGGY_HUB':  [('RND_W', 5.0)],
+    'SRM_IST':    [('RND_N', 42.0)],
+    'SRM_HOSP':   [('RND_E', 42.0)],
+    'SRM_TEMPLE': [('RND_S', 42.0)],
+    'RND_N':      [('SRM_IST', 42.0), ('RND_W', 12.0), ('RND_E', 12.0)],
+    'RND_S':      [('SRM_TEMPLE', 42.0), ('RND_W', 12.0), ('RND_E', 12.0)],
+    'RND_E':      [('SRM_HOSP', 42.0), ('RND_N', 12.0), ('RND_S', 12.0)],
+    'RND_W':      [('BUGGY_HUB', 5.0), ('RND_N', 12.0), ('RND_S', 12.0)],
 }
 
 # ── Terminal menu shown to user ───────────────────────────────
@@ -36,6 +44,7 @@ DESTINATION_MENU = {
     'A': 'SRM_IST',
     'B': 'SRM_HOSP',
     'C': 'SRM_TEMPLE',
+    'D': 'BUGGY_HUB',
 }
 
 DESTINATION_DISPLAY = {

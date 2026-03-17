@@ -15,12 +15,10 @@ setup(
     zip_safe=True,
     maintainer='srmist',
     maintainer_email='srmist@todo.todo',
-    description='TODO: Package description',
+    description='SRM Autonomous Buggy Brain',
     license='TODO: License declaration',
     extras_require={
-        'test': [
-            'pytest',
-        ],
+        'test': ['pytest'],
     },
     entry_points={
         'console_scripts': [
@@ -29,6 +27,8 @@ setup(
             'obstacle_detector = buggy_brain.obstacle_detector:main',
             'state_machine = buggy_brain.state_machine:main',
             'speed_controller = buggy_brain.speed_controller:main',
+            'sensor_stub = buggy_brain.sensor_stub:main',
+            'set_destination = buggy_brain.set_destination:main',
         ],
     },
 )
