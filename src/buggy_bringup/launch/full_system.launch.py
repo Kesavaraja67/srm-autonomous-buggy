@@ -74,10 +74,10 @@ def generate_launch_description():
         arguments=[
             '-topic', 'robot_description',
             '-entity', entity_name,
-            '-x', '0.0',     # BUGGY_HUB X  §2.2
-            '-y', '0.0',     # BUGGY_HUB Y  §2.2
-            '-z', '0.425',   # wheel_radius + chassis clearance
-            '-Y', '1.5708',  # 90° yaw → facing North toward SRM_IST
+            '-x', '-13.0',   # BUGGY_HUB X
+            '-y', '0.0',     # BUGGY_HUB Y
+            '-z', '0.15',    # Spawn a bit higher
+            '-Y', '0.0',     # 0.0 yaw → facing East, looking out of the bay
         ],
         output='screen',
     )

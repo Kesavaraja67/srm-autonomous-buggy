@@ -49,10 +49,10 @@ def generate_launch_description():
         arguments=[
             '-topic', 'robot_description',
             '-entity', entity_name,
-            '-x', '-11.0',   # inside buggy shelter bay, just off roundabout
+            '-x', '-13.0',   # inside buggy shelter bay, just off roundabout
             '-y', '0.0',
-            '-z', '0.425',
-            '-Y', '1.5708',  # facing North toward SRM_IST
+            '-z', '0.15',
+            '-Y', '0.0',     # 0.0 yaw → facing East, looking out of the bay
         ],
         output='screen',
     )
