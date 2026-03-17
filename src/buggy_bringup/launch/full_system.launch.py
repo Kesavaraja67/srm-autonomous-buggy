@@ -3,7 +3,7 @@
 full_system.launch.py  v2.0 — SRM Autonomous Buggy
 ────────────────────────────────────────────────────
 Launches Gazebo + robot + state publishers.
-Buggy spawns at BUGGY_HUB (0, 0) facing North (+Y toward SRM_IST).
+Buggy spawns inside shelter bay (x=-13.0, y=0.0) facing East (yaw=0.0).
 (Brain nodes are disabled by default; see lines 84-99 to enable them.)
 Team Alpha owns this file. §Day 5 integration point.
 """
@@ -67,16 +67,16 @@ def generate_launch_description():
         parameters=[{'use_sim_time': True}],
     )
 
-    # ── 3. Spawn at BUGGY_HUB (0,0) facing North
+    # ── 3. Spawn inside shelter bay facing East (out of the bay)
     spawn_entity = Node(
         package='gazebo_ros',
         executable='spawn_entity.py',
         arguments=[
             '-topic', 'robot_description',
             '-entity', entity_name,
-            '-x', '-13.0',   # BUGGY_HUB X
-            '-y', '0.0',     # BUGGY_HUB Y
-            '-z', '0.15',    # Spawn a bit higher
+            '-x', '-13.0',   # shelter bay center X
+            '-y', '0.0',     # shelter bay center Y
+            '-z', '0.15',    # slightly above bay surface for physics settling
             '-Y', '0.0',     # 0.0 yaw → facing East, looking out of the bay
         ],
         output='screen',

@@ -2,8 +2,8 @@
 """
 buggy_spawn.launch.py  v3.0 — SRM Autonomous Buggy
 ────────────────────────────────────────────────────
-Spawns buggy at BUGGY_HUB roundabout
-Facing North (+Y) toward SRM_IST (0, 50)
+Spawns buggy inside buggy shelter bay
+Facing East (+X), looking out of the bay
 """
 import os
 from ament_index_python.packages import get_package_share_directory

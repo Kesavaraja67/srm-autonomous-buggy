@@ -645,14 +645,8 @@
 
   <!-- ═══════════════════════════════
        LIVOX MID-360 LiDAR — FIXED
-       Mounted ON TOP of roof.
-       lidar_link origin = at the functional scan centre.
-       The physical sensor body sits below this point on the roof.
-       roof is at roof_z = 1.475m above base_link.
-       roof top surface = roof_z + roof_t/2 = 1.475 + 0.03 = 1.505m
-       Sensor sits at 1.505 + 0.025 = 1.53m (base of sensor)
-       Scan origin (top of dome) ≈ 1.53 + 0.065 = 1.595m
-       Use 1.60m for scan origin. Sensor body centred at 1.53+0.03=1.56m
+       Mounted ON TOP of roof at scan origin z=1.85m above base_link.
+       This provides clearance above the roof for unobstructed 360° scanning.
   ═══════════════════════════════ -->
   <joint name="lidar_jt" type="fixed">
     <parent link="base_link"/><child link="lidar_link"/>

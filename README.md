@@ -243,33 +243,33 @@ srm_buggy_ws/
 
 ## 🗺️ Campus Map
 
-```
-Admin Block (C)
-     │
-     │  20 m
-     │
-    HUB ──────────────── Library Block (B)
-(0, 0)       20 m              (20, 0)
-     │
-     │  20 m
-     │
-  START / Main Gate (A)
-   (-20, 0)
+```text
+  SRM Institute (A)
+       (0, 50)
+          │
+          │  50 m
+          │
+    BUGGY_HUB ──────────────── SRM Hospital (B)
+     (0, 0)        50 m            (50, 0)
+          │
+          │  50 m
+          │
+    SRM Temple (C)
+      (0, -50)
 ```
 
 | Node | Gazebo Coordinates | Destination Letter |
 |------|-------------------|--------------------|
-| **START** | `(-20.0, 0.0)` | — |
-| **HUB** | `(0.0, 0.0)` | — |
-| **Main Gate (A)** | `(-20.0, 0.0)` | `A` |
-| **Library Block (B)** | `(20.0, 0.0)` | `B` |
-| **Admin Block (C)** | `(0.0, 20.0)` | `C` |
+| **BUGGY_HUB** | `(0.0, 0.0)` | — |
+| **SRM Institute (A)** | `(0.0, 50.0)` | `A` |
+| **SRM Hospital (B)** | `(50.0, 0.0)` | `B` |
+| **SRM Temple (C)** | `(0.0, -50.0)` | `C` |
 
 **Dijkstra Sample Output:**
-```
-START → B :  START  →  HUB  →  B   (40 m)
-START → C :  START  →  HUB  →  C   (40 m)
-START → A :  START  →  A         (0 m, same node)
+```text
+BUGGY_HUB → A :  BUGGY_HUB  →  SRM_IST     (50.0 m)
+BUGGY_HUB → B :  BUGGY_HUB  →  SRM_HOSP    (50.0 m)
+BUGGY_HUB → C :  BUGGY_HUB  →  SRM_TEMPLE  (50.0 m)
 ```
 
 ---
