@@ -420,23 +420,23 @@ MINIMUM VIABLE DEMO — Phase 1 is a success if ALL 5 are true:
 
 | Item | Status |
 |------|--------|
-| `colcon build` passes with zero errors | `[]` |
-| All 5 sensor topics publishing at correct Hz | `[ ]` |
-| Gazebo campus world renders with road network | `[ ]` |
-| Dijkstra computes correct path for all 3 destinations | `[ ]` |
-| Buggy navigates START → B autonomously | `[ ]` |
-| Buggy navigates START → C autonomously | `[ ]` |
-| Emergency stop triggers at 1.5 m | `[ ]` |
-| Buggy resumes after 5 clear LiDAR readings | `[ ]` |
+| `colcon build` passes with zero errors | `[x]` |
+| All 5 sensor topics publishing at correct Hz | `[x]` |
+| Gazebo campus world renders with road network | `[x]` |
+| Dijkstra computes correct path for all 3 destinations | `[x]` |
+| Buggy navigates START → B autonomously | `[x]` |
+| Buggy navigates START → C autonomously | `[x]` |
+| Emergency stop triggers at 1.5 m | `[x]` |
+| Buggy resumes after 5 clear LiDAR readings | `[x]` |
 | Ultrasonic alert triggers at 0.30 m | `[ ]` |
 | Crowd detection triggers with 40+ LiDAR rays | `[ ]` |
 | MANUAL_CONTROL entered after countdown | `[ ]` |
-| Arrival announcement printed in terminal | `[ ]` |
-| System accepts new destination after arrival | `[ ]` |
+| Arrival announcement printed in terminal | `[x]` |
+| System accepts new destination after arrival | `[x]` |
 | RViz2 shows: model, pointcloud, camera, markers | `[ ]` |
-| `run_demo.sh` launches everything in one command | `[ ]` |
+| `run_demo.sh` launches everything in one command | `[x]` |
 | 8/10 stress test runs pass | `[ ]` |
-| GitHub repository pushed with README + traceability | `[ ]` |
+| GitHub repository pushed with README + traceability | `[x]` |
 | RQT node graph screenshot saved to `docs/` | `[ ]` |
 
 ---
