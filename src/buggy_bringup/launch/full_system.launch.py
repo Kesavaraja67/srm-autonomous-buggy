@@ -56,11 +56,12 @@ def generate_launch_description():
                 '-topic',  'robot_description',
                 '-x', '-13',
                 '-y', '0',
-                '-z', '0.425',
+                '-z', '0.15',
                 '-R', '0',
                 '-P', '0',
                 '-Y', '0.0'
             ]
+
         ),
 
         # ── Path planner ──
