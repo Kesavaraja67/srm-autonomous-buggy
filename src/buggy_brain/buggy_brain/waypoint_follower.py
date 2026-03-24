@@ -7,16 +7,16 @@ from nav_msgs.msg import Odometry, Path
 from std_msgs.msg import String, Float32
 
 # Tuning constants
-MAX_LINEAR_SPEED  = 0.80
-MIN_LINEAR_SPEED  = 0.20
-ANGULAR_P_GAIN    = 0.50
-MAX_ANGULAR_SPEED = 0.50
-ARRIVAL_RADIUS    = 6.00
+MAX_LINEAR_SPEED  = 1.00
+MIN_LINEAR_SPEED  = 0.30
+ANGULAR_P_GAIN    = 1.00
+MAX_ANGULAR_SPEED = 0.80
+ARRIVAL_RADIUS    = 5.00
 SLOW_TURN_SPEED   = 0.20
-HEADING_THRESHOLD = 0.40
+HEADING_THRESHOLD = 0.30
 HEADING_DEADBAND  = 0.05
-TURN_IN_PLACE_THR = 2.80
-CONTROL_RATE_HZ   = 10
+TURN_IN_PLACE_THR = 0.80
+CONTROL_RATE_HZ   = 20
 
 def yaw_from_quaternion(q) -> float:
     siny_cosp = 2.0 * (q.w * q.z + q.x * q.y)

@@ -2,10 +2,7 @@ import heapq
 
 # Campus nodes with intermediate waypoints for smoother navigation
 NODES = {
-    'BUGGY_HUB':   ( -5.0,   0.0),
-    'HUB_N':       (  0.0,  12.0),
-    'HUB_E':       ( 12.0,   0.0),
-    'HUB_S':       (  0.0, -12.0),
+    'BUGGY_HUB':   (  0.0,   0.0),
     'SRM_IST':     (  0.0,  50.0),
     'SRM_HOSP':    ( 50.0,   0.0),
     'SRM_TEMPLE':  (  0.0, -50.0),

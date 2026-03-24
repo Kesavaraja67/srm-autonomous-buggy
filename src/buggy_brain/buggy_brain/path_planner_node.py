@@ -12,7 +12,7 @@ class PathPlannerNode(Node):
     def __init__(self):
         super().__init__('path_planner_node')
 
-        self.current_position = 'BUGGY_HUB'
+        self.current_position = 'SRM_IST'
 
         self.goal_sub = self.create_subscription(
             String, '/goal_destination', self.goal_callback, 10)

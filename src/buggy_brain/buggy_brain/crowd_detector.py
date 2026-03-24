@@ -21,9 +21,9 @@ class CrowdDetector(Node):
 
         # --- Parameters ---
         self.min_crowd_range    = 0.5    # metres — ignore closer than this
-        self.max_crowd_range    = 4.0    # metres — ignore farther than this
-        self.crowd_threshold    = 30     # ray count above this = crowd
-        self.clear_threshold    = 15     # ray count below this = clear
+        self.max_crowd_range    = 2.5    # metres — ignore farther than this
+        self.crowd_threshold    = 80     # ray count above this = crowd
+        self.clear_threshold    = 60     # ray count below this = clear
         self.front_arc_deg      = 120.0  # degrees — detection arc width
 
         # --- State ---

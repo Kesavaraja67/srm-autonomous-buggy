@@ -54,9 +54,9 @@ def generate_launch_description():
             arguments=[
                 '-entity', 'srm_buggy',
                 '-topic',  'robot_description',
-                '-x', '-14',
-                '-y', '0',
-                '-z', '0.50',
+                '-x', '0',
+                '-y', '15',
+                '-z', '0.15',
                 '-R', '0',
                 '-P', '0',
                 '-Y', '1.5708'
@@ -86,15 +86,15 @@ def generate_launch_description():
         ]),
 
         # ── Obstacle detector ──
-       # TimerAction(period=7.0, actions=[
-       #     Node(
-        #        package='buggy_brain',
-         #       executable='obstacle_detector',
-          #      name='obstacle_detector',
-           #     output='screen',
-           #     parameters=[sim_time]
-          #  ),
-       #  ]),
+        TimerAction(period=7.0, actions=[
+            Node(
+                package='buggy_brain',
+                executable='obstacle_detector',
+                name='obstacle_detector',
+                output='screen',
+                parameters=[sim_time]
+            ),
+        ]),
 
         # ── State machine ──
         TimerAction(period=8.0, actions=[
