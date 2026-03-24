@@ -103,6 +103,8 @@ def find_shortest_path(graph: Dict[str, List[Tuple[str, float]]], start: str, go
         return []
     return list(reversed(path))
 
+def get_path_coordinates(path):
+    return [NODES[node] for node in path if node in NODES]
 
 if __name__ == '__main__':
     print("=" * 60)

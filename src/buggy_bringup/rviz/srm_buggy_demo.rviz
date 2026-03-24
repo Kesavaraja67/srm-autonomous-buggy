@@ -1,15 +1,96 @@
 Panels:
   - Class: rviz_common/Displays
     Name: Displays
+  - Class: rviz_common/Selection
+    Name: Selection
+  - Class: rviz_common/Views
+    Name: Views
+
 Visualization Manager:
-  Global Options:
-    Fixed Frame: odom
+  Class: ""
   Displays:
+    - Class: rviz_default_plugins/Grid
+      Name: Grid
+      Enabled: true
+      Cell Size: 5
+      Color: 160; 160; 164
+      Line Style:
+        Line Width: 0.029999999329447746
+        Value: Lines
+      Normal Cell Count: 0
+      Offset:
+        X: 0
+        Y: 0
+        Z: 0
+      Plane: XY
+      Plane Cell Count: 20
+
     - Class: rviz_default_plugins/RobotModel
       Name: RobotModel
-      Topic: /robot_description
       Enabled: true
+      Description Topic:
+        Value: /robot_description
+
     - Class: rviz_default_plugins/LaserScan
-      Name: LiDAR
-      Topic: /scan
+      Name: LiDAR Scan
       Enabled: true
+      Topic:
+        Value: /scan
+      Color: 255; 0; 0
+      Size (m): 0.05
+      Style: Spheres
+
+    - Class: rviz_default_plugins/Path
+      Name: Planned Path
+      Enabled: true
+      Topic:
+        Value: /planned_path
+      Color: 255; 255; 0
+      Line Style: Lines
+      Line Width: 0.10000000149011612
+
+    - Class: rviz_default_plugins/MarkerArray
+      Name: Visualization Markers
+      Enabled: true
+      Topic:
+        Value: /visualization_markers
+
+    - Class: rviz_default_plugins/Odometry
+      Name: Odometry
+      Enabled: true
+      Topic:
+        Value: /odom
+      Color: 255; 100; 0
+      Length: 1.0
+      Shaft Length: 0.30000001192092896
+
+    - Class: rviz_default_plugins/TF
+      Name: TF
+      Enabled: false
+      Frame Timeout: 15
+
+  Global Options:
+    Background Color: 48; 48; 48
+    Fixed Frame: odom
+    Frame Rate: 30
+
+  Name: root
+  Tools:
+    - Class: rviz_default_plugins/MoveCamera
+    - Class: rviz_default_plugins/Select
+
+  Value: true
+  Views:
+    Current:
+      Class: rviz_default_plugins/Orbit
+      Name: Current View
+      Near Clip Distance: 0.009999999776482582
+      Target Frame: <Fixed Frame>
+      Value: Orbit (rviz)
+      Distance: 120
+      Pitch: 0.785398
+      Yaw: 0.785398
+      Focal Point:
+        X: 0
+        Y: 0
+        Z: 0

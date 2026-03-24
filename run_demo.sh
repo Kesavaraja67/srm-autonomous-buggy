@@ -45,7 +45,7 @@ fi
 # Launch Gazebo + RViz + all nodes
 if [ "$HEADLESS" = true ]; then
     export HEADLESS=1
-    ros2 launch buggy_bringup bringup.launch.py world:="$WORLD" headless:=true
+    ros2 launch buggy_bringup full_system.launch.py world:="$WORLD" headless:=true
 else
-    ros2 launch buggy_bringup bringup.launch.py world:="$WORLD" headless:=false
+    ros2 launch buggy_bringup full_system.launch.py world:="$WORLD" headless:=false
 fi

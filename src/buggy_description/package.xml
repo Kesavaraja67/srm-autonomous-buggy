@@ -1,4 +1,16 @@
 <?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>buggy_description</name>
+  <version>0.0.0</version>
+  <description>URDF and mesh files for the SRM autonomous buggy</description>
+  <maintainer email="karthikvanapalli08@gmail.com">Karthik2509-git</maintainer>
+  <license>Apache-2.0</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <exec_depend>robot_state_publisher</exec_depend>
+  <exec_depend>xacro</exec_depend>
+
 <package format="3">
   <name>buggy_description</name>
   <version>1.0.0</version>

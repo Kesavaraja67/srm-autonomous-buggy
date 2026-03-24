@@ -32,7 +32,8 @@
   <!-- ═══════════════════════════════════════════
        PHYSICS
   ═══════════════════════════════════════════ -->
-  <physics name="ode_physics" default="true" type="ode">
+
+<physics name="ode_physics" default="true" type="ode">
     <max_step_size>0.001</max_step_size>
     <real_time_factor>1.0</real_time_factor>
     <real_time_update_rate>1000</real_time_update_rate>
@@ -734,4 +735,5 @@
   <model name="cp6"><static>false</static><pose>-0.3 17 0.5 0 0 0</pose><link name="l"><collision name="c"><geometry><cylinder><radius>0.22</radius><length>1.0</length></cylinder></geometry></collision><visual name="v"><geometry><cylinder><radius>0.22</radius><length>1.0</length></cylinder></geometry><material><ambient>0.9 0.2 0.5 1</ambient><diffuse>0.9 0.2 0.5 1</diffuse></material></visual><inertial><mass>2</mass><inertia><ixx>0.1</ixx><ixy>0</ixy><ixz>0</ixz><iyy>0.1</iyy><iyz>0</iyz><izz>0.1</izz></inertia></inertial></link></model>
 
 </world>
+</sdf>
 </sdf>

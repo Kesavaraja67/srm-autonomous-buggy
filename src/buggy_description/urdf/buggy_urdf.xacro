@@ -100,7 +100,7 @@
     <inertial>
       <mass value="280.0"/>
       <origin xyz="0 0 0" rpy="0 0 0"/>
-      <inertia ixx="80" ixy="0" ixz="0" iyy="400" iyz="0" izz="450"/>
+<inertia ixx="350" ixy="0" ixz="0" iyy="800" iyz="0" izz="900"/>
     </inertial>
   </link>
   <gazebo reference="base_link"><material>Gazebo/White</material></gazebo>
@@ -635,7 +635,7 @@
         <inertia ixx="0.4" ixy="0" ixz="0" iyy="0.4" iyz="0" izz="0.7"/>
       </inertial>
     </link>
-    <gazebo reference="${name}"><mu1>1.0</mu1><mu2>1.0</mu2><kp>1e6</kp><kd>100</kd><material>Gazebo/Black</material></gazebo>
+<gazebo reference="${name}"><mu1>1.0</mu1><mu2>1.0</mu2><kp>1e6</kp><kd>100</kd><minDepth>0.001</minDepth><maxVel>1.0</maxVel><material>Gazebo/Black</material></gazebo>
   </xacro:macro>
 
   <xacro:wheel name="wfl" px=" 1.30" py=" 0.55" side=" 1"/>
@@ -832,9 +832,9 @@
       <left_joint>wrl_jt</left_joint>
       <right_joint>wrr_jt</right_joint>
       <wheel_separation>1.10</wheel_separation>
-      <wheel_diameter>${wr * 2}</wheel_diameter>
-      <max_wheel_torque>500</max_wheel_torque>
-      <max_wheel_acceleration>5.0</max_wheel_acceleration>
+      <wheel_diameter>0.52</wheel_diameter>
+      <max_wheel_torque>200</max_wheel_torque>
+      <max_wheel_acceleration>1.0</max_wheel_acceleration>
       <publish_odom>true</publish_odom>
       <publish_odom_tf>true</publish_odom_tf>
       <publish_wheel_tf>false</publish_wheel_tf>
@@ -842,6 +842,7 @@
       <robot_base_frame>base_footprint</robot_base_frame>
       <command_topic>cmd_vel</command_topic>
       <odometry_topic>odom</odometry_topic>
+      <ros_debug_level>na</ros_debug_level>
     </plugin>
   </gazebo>
 
