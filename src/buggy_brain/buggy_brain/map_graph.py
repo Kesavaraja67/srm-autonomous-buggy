@@ -1,21 +1,40 @@
+#!/usr/bin/env python3
 import heapq
 
-# Campus nodes with intermediate waypoints for smoother navigation
 NODES = {
-    'BUGGY_HUB':   (  0.0,   0.0),
-    'SRM_IST':     (  0.0,  50.0),
-    'SRM_HOSP':    ( 50.0,   0.0),
-    'SRM_TEMPLE':  (  0.0, -50.0),
+    'BUGGY_HUB':  (-13.0,   0.0),
+    'SRM_IST':    (-12.0,  50.0),
+    'SRM_HOSP':   ( 50.0,  12.0),
+    'SRM_TEMPLE': (-12.0, -50.0),
+    'RND_N':      (  0.0,   8.0),
+    'RND_S':      (  0.0,  -8.0),
+    'RND_E':      (  8.0,   0.0),
+    'RND_W':      ( -8.0,   0.0),
 }
 
 EDGES = {
-    'BUGGY_HUB':  [('HUB_N', 13), ('HUB_E', 13), ('HUB_S', 13)],
-    'HUB_N':      [('BUGGY_HUB', 13), ('SRM_IST', 38), ('HUB_E', 17), ('HUB_S', 24)],
-    'HUB_E':      [('BUGGY_HUB', 13), ('SRM_HOSP', 38), ('HUB_N', 17), ('HUB_S', 17)],
-    'HUB_S':      [('BUGGY_HUB', 13), ('SRM_TEMPLE', 38), ('HUB_N', 24), ('HUB_E', 17)],
-    'SRM_IST':    [('HUB_N', 38)],
-    'SRM_HOSP':   [('HUB_E', 38)],
-    'SRM_TEMPLE': [('HUB_S', 38)],
+    'BUGGY_HUB':  [('RND_W', 5.0)],
+    'SRM_IST':    [('RND_N', 42.0)],
+    'SRM_HOSP':   [('RND_E', 42.0)],
+    'SRM_TEMPLE': [('RND_S', 42.0)],
+    'RND_N':      [('SRM_IST', 42.0), ('RND_W', 12.0), ('RND_E', 12.0)],
+    'RND_S':      [('SRM_TEMPLE', 42.0), ('RND_W', 12.0), ('RND_E', 12.0)],
+    'RND_E':      [('SRM_HOSP', 42.0), ('RND_N', 12.0), ('RND_S', 12.0)],
+    'RND_W':      [('BUGGY_HUB', 5.0), ('RND_N', 12.0), ('RND_S', 12.0)],
+}
+
+VALID_DESTINATIONS = {
+    'A': 'SRM_IST',
+    'B': 'SRM_HOSP',
+    'C': 'SRM_TEMPLE',
+    'D': 'BUGGY_HUB',
+}
+
+DESTINATION_DISPLAY = {
+    'SRM_IST':    'SRM Institute of Science & Technology (North)',
+    'SRM_HOSP':   'SRM Hospital / Medical College (East)',
+    'SRM_TEMPLE': 'SRM Campus Temple (South)',
+    'BUGGY_HUB':  'Buggy Hub — Home Base',
 }
 
 def find_shortest_path(start, goal):
@@ -61,10 +80,10 @@ if __name__ == '__main__':
         ('BUGGY_HUB', 'SRM_TEMPLE'),
         ('SRM_IST',   'SRM_HOSP'),
         ('SRM_IST',   'SRM_TEMPLE'),
+        ('SRM_TEMPLE','BUGGY_HUB'),
     ]
     for start, goal in tests:
         path = find_shortest_path(start, goal)
         coords = get_path_coordinates(path)
         print(f'{start} -> {goal}: {path}')
         print(f'  coords: {coords}')
-
