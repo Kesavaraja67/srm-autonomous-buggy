@@ -1,7 +1,7 @@
 <div align="center">
 
 <!-- HERO BANNER -->
-<img src="docs/assets/banner.png" alt="SRM Autonomous Buggy Banner" width="100%"/>
+<img src="src/docs/assets/banner.png" alt="SRM Autonomous Buggy Banner" width="100%"/>
 
 <br/>
 
